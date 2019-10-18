@@ -1,52 +1,14 @@
 version: '3.2'
 services:
-  backend:
-    #build: backend
-    image: yiisoftware/yii2-php:7.2-apache
-    container_name: qaqnus_backend
-    volumes:
-    - ./:/app:delegated
-    - ~/.composer-docker/cache:/root/.composer/cache:delegated
-    - ./.docker/vhosts/backend:/etc/apache2/sites-enabled:delegated
+  db:
+    image: mysql:5.7
+    container_name: todo_mysql
+    environment:
+      MYSQL_DATABASE: todo
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_USER: todo
+      MYSQL_PASSWORD: todo
     ports:
-    - '0.0.0.0:8080:80'
-    extra_hosts:
-    - "backend.qaqnus.lc:127.0.0.1"
-    links:
-    - mongo
-    - static
-  api:
-    #build: api
-    image: yiisoftware/yii2-php:7.2-apache
-    container_name: qaqnus_api
+      - '3306:3306'
     volumes:
-    - ./:/app:delegated
-    - ~/.composer-docker/cache:/root/.composer/cache:delegated
-    - ./.docker/vhosts/api:/etc/apache2/sites-enabled:delegated
-    ports:
-    - '0.0.0.0:8081:80'
-    extra_hosts:
-    - "api.qaqnus.lc:127.0.0.1"
-    links:
-    - mongo
-    - static
-  static:
-    #build: static
-    image: yiisoftware/yii2-php:7.2-apache
-    container_name: qaqnus_static
-    volumes:
-    - ./:/app:delegated
-    - ~/.composer-docker/cache:/root/.composer/cache:delegated
-    - ./.docker/vhosts/static:/etc/apache2/sites-enabled:delegated
-    ports:
-    - '0.0.0.0:8082:80'
-    extra_hosts:
-    - "static.qaqnus.lc:127.0.0.1"
-  mongo:
-    image: mongo:latest
-    container_name: qaqnus_mongo
-    volumes:
-    - ./backups:/backups
-  redis:
-    image: redis
-    container_name: qaqnus_redis
+      - ./backups:/backups

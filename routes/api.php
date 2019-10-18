@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('cors')->group(function(){
+    Route::get('todo', 'TodoController@index');
+    Route::post('/todo','TodoController@store');
+});
