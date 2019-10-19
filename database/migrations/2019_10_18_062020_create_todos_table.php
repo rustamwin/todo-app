@@ -15,9 +15,9 @@ class CreateTodosTable extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('title')->unique();
+            $table->string('title')->unique();
             $table->integer('position')->default(0);
-            $table->integer('parent_id')
+            $table->bigInteger('parent_id')
                   ->nullable()
                   ->unsigned();
             $table->boolean('done')->default(false);
@@ -27,7 +27,7 @@ class CreateTodosTable extends Migration
             $table->foreign('parent_id')
                   ->references('id')
                   ->on('todos')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
     }
 
