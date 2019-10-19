@@ -15,6 +15,7 @@ services:
       - '3000:3000'
     volumes:
       - ./:/app
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
   app:
     container_name: todo_app
     build:
