@@ -17,7 +17,7 @@ class TodoCollection extends ResourceCollection
     {
         return [
             'id' => $this->id,
-            'text' => $this->title,
+            'title' => $this->title,
             'children' => $this->children,
         ];
     }
@@ -30,8 +30,9 @@ class TodoCollection extends ResourceCollection
                 $todo->parent_id = $parent;
                 $todo->position = $pos++;
                 $todo->save();
-                if (isset($item['children']))
+                if (isset($item['children'])) {
                     self::sortTree($item['children'], $todo->id);
+                }
             }
         }
         return true;

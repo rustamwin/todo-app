@@ -1,5 +1,30 @@
 version: '3.2'
 services:
+  app:
+    container_name: todo_app
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+    environment:
+      - API_BASE_URL=http://127.0.0.1:3000
+    ports:
+      - 8080:8080
+  api:
+    tty: true
+    container_name: todo_api
+    image: bitnami/laravel:6-debian-9
+    environment:
+      - DB_HOST=todo_mysql
+      - DB_USERNAME=todo
+      - DB_DATABASE=todo
+      - DB_PASSWORD=todo
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/app
+    #command: ["composer", "install"]
   db:
     image: mysql:5.7
     container_name: todo_mysql
@@ -8,7 +33,5 @@ services:
       MYSQL_ROOT_PASSWORD: 123
       MYSQL_USER: todo
       MYSQL_PASSWORD: todo
-    ports:
-      - '3306:3306'
     volumes:
       - ./backups:/backups
