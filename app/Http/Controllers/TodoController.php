@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TodoCollection;
 use App\Todo;
 use Illuminate\Http\Request;
 
@@ -15,7 +14,10 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return response(Todo::with(['children'])->get());
+        return response()->json(Todo::with(['children'])
+                                    ->where('parent_id', '=', null)
+                                    ->orderBy('position')
+                                    ->get());
     }
 
     /**
@@ -40,18 +42,7 @@ class TodoController extends Controller
      */
     public function show(Todo $todo)
     {
-        return response(Todo::with('children')->get());
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Todo $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Todo $todo)
-    {
-        //
+        return response($todo);
     }
 
     /**
@@ -61,20 +52,29 @@ class TodoController extends Controller
      * @param  \App\Todo $todo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Todo $todo)
+    public function update(Request $request, int $id)
     {
-        //
+        $todo = Todo::find($id);
+        $todo->fill($request->all());
+        if ($todo->save()) {
+            return response()->json(['success' => true, 'message' => 'Updated', 'model' => $todo]);
+        }
+        return response()->json(['success' => false], 400);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Todo $todo
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Todo $todo)
+    public function destroy(int $id)
     {
-        $todo->delete();
-        return response(['success' => true]);
+        try {
+            Todo::destroy($id);
+            return response(['success' => true]);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage(), 'success' => false]);
+        }
     }
 }

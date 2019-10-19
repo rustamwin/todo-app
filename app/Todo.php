@@ -12,6 +12,7 @@ class Todo extends Model
     public function children()
     {
         return $this->hasMany(Todo::class, 'parent_id')
-                    ->with('children');
+                    ->with('children')
+                    ->orderBy('position');
     }
 }
