@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TodoCollection;
 use App\Todo;
 use Illuminate\Http\Request;
 
@@ -29,9 +30,23 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['position'] = Todo::all()->count() + 1;
         $todo = Todo::create($data);
         return $todo;
+    }
+
+    /**
+     * Sort todos.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sort(Request $request)
+    {
+        $data = $request->get('items');
+        if (TodoCollection::sortTree($data)) {
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false]);
     }
 
     /**
@@ -58,6 +73,23 @@ class TodoController extends Controller
         $todo->fill($request->all());
         if ($todo->save()) {
             return response()->json(['success' => true, 'message' => 'Updated', 'model' => $todo]);
+        }
+        return response()->json(['success' => false], 400);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function done(Request $request, int $id)
+    {
+        $todo = Todo::find($id);
+        $todo->done = $request->get('done');
+        if ($todo->save()) {
+            return response()->json(['success' => true, 'message' => 'Done', 'model' => $todo]);
         }
         return response()->json(['success' => false], 400);
     }

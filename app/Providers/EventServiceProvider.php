@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Todo;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -29,6 +29,18 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        Todo::saving(function (Todo $model) {
+            if ($model->done === true) {
+                $model->done_at = now();
+            }
+        });
+
+        Todo::creating(function (Todo $model) {
+            $model->position = Todo::all()->count() + 1;
+        });
+
+        Todo::deleted(function (Todo $todo) {
+            Todo::where('parent_id', '=', $todo->id)->update(['parent_id' => null]);
+        });
     }
 }

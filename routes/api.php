@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('cors')->group(function () {
     Route::get('todo', 'TodoController@index');
     Route::post('todo', 'TodoController@store');
+    Route::post('todo/sort', 'TodoController@sort');
     Route::delete('todo/{id}', 'TodoController@destroy');
     Route::put('todo/{id}', 'TodoController@update');
+    Route::patch('todo/{id}', 'TodoController@done');
 });
