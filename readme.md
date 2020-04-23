@@ -4,7 +4,6 @@
 ```bash
 ~$ git clone git@github.com:rustamwin/todo-app.git && cd todo-app
 ```
-
 2. Run app with `docker-compose up -d --build`
 
 3. Tada :tada: visit `http://127.0.0.1:8080`
