@@ -15,7 +15,7 @@
         "materialize-css": "^1.0.0",
         "sass-loader": "^10.0.4",
         "vue": "^2.6.12",
-        "vue-nestable": "^2.5.3"
+        "vue-nestable": "^2.6.0"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^4.5.8",
