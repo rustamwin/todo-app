@@ -10,7 +10,7 @@
     "dependencies": {
         "axios": "^0.21.0",
         "bootstrap": "^4.5.2",
-        "bootstrap-vue": "^2.18.1",
+        "bootstrap-vue": "^2.19.0",
         "core-js": "^3.6.5",
         "materialize-css": "^1.0.0",
         "sass-loader": "^10.0.5",
