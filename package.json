@@ -13,7 +13,7 @@
         "bootstrap-vue": "^2.21.1",
         "core-js": "^3.8.1",
         "materialize-css": "^1.0.0",
-        "sass-loader": "^10.1.0",
+        "sass-loader": "^10.1.1",
         "vue": "^2.6.12",
         "vue-nestable": "^2.6.0"
     },
